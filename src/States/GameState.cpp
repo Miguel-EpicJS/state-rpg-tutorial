@@ -11,14 +11,35 @@ GameState::~GameState()
 
 void GameState::combatTest()
 {
-    Enemy enemy(this->character->getLevel() + 5);
+    Enemy enemy(this->character->getLevel());
     bool end_combat = false;
+
+    int turnDice  = rand() % 2;
+    int round = 0;
+
+    srand(time(NULL));
 
     while (!end_combat)
     {
+        round++;
+
+        std::string atkStr = "Player";
+        std::string defStr = "Enemy";
 
         float hitRating = static_cast<float>(this->character->getHitChance());
         float defence = static_cast<float>(enemy.getDefence());
+
+        if (!turnDice)
+        {
+            atkStr = "Enemy";
+            defStr = "Player";
+
+            hitRating = static_cast<float>(enemy.getHitChance());
+            defence = static_cast<float>(this->character->getDefence());
+
+        }
+                
+        
         float totalHitDef = hitRating + defence;
 
         float hitPercent = 100.f * (hitRating / totalHitDef) + 10;
@@ -27,24 +48,42 @@ void GameState::combatTest()
         int random = rand() % 100 + 1;
 
         std::cout << "----------------------------------------------------------------\n";
-        std::cout << "Total: " << totalHitDef << "\n";
-        std::cout << "Hit rating: " << hitRating << " Percent: " << hitPercent << "\n";
-        std::cout << "Defence: " << defence << " Defence Percent: " << defPercent << "\n";
-        std::cout << "Player Damage: " << this->character->getDamageMin() << " - " << this->character->getDamageMax() << "\n";
-        std::cout << "Enemy Damage: " << enemy.getDamageMin() << " - " << enemy.getDamageMax() << "\n";
-        std::cout << "Random number: " << random << "\n";
+        std::cout << "Attacker: " << atkStr << "\n";
+        std::cout << "Defender: " << defStr << "\n";
+        std::cout << "Round: " << round << "\n";
         std::cout << "----------------------------------------------------------------\n";
 
         if (random > 0 && random <= hitPercent)
         {
-            int damage = rand()% (this->character->getDamageMax()) + (this->character->getDamageMin());
-            enemy.takeDamage(damage);
-            std::cout << "YOU HIT THE ENEMY " << "(" << enemy.getHP() << "/" << enemy.getMaxHP() << ")" << " FOR " << damage << "!" << "\n";
+            int damage = 0;
+            
+            if (turnDice)
+            {
+                damage = rand()% (this->character->getDamageMax()) + (this->character->getDamageMin());
+                enemy.takeDamage(damage);
+            }
+            else
+            {
+                damage = rand()% (enemy.getDamageMax()) + (enemy.getDamageMin());
+                this->character->takeDamage(damage);
+            }
+            
+            std::cout << atkStr << " HIT " << defStr << " FOR " << damage << "!" << "\n";
         }
         else
         {
-            std::cout << "YOU MISSED THE ENEMY!\n";
+            std::cout << atkStr << " MISSED " << defStr << "\n";
         }
+
+        std::cout << "----------------------------------------------------------------\n";
+        std::cout << "Total: " << totalHitDef << "\n";
+        std::cout << "Hit rating: " << hitRating << " Percent: " << hitPercent << "\n";
+        std::cout << "Defence: " << defence << " Defence Percent: " << defPercent << "\n";
+        std::cout << "Player Damage: " << this->character->getDamageMin() << " - " << this->character->getDamageMax() << "\n";
+        std::cout << "Player HP: " << this->character->getHP() << "/" << this->character->getMaxHP() << "\n";
+        std::cout << "Enemy Damage: " << enemy.getDamageMin() << " - " << enemy.getDamageMax() << "\n";
+        std::cout << "Enemy HP: " << enemy.getHP() << "/" << enemy.getMaxHP() << "\n";
+        std::cout << "----------------------------------------------------------------\n";
 
         if (this->character->getIsDead())
         {
@@ -58,6 +97,9 @@ void GameState::combatTest()
             std::cout << "YOU DEAFEATED THE ENEMY AND GAINED " << gainExp << " EXP!\n";
             this->character->addExp(gainExp);
         }
+
+        turnDice = !turnDice;
+        std::cin.get();
     }
 }
 
@@ -74,7 +116,7 @@ void GameState::printMenu() const
               << "\n"
               << " (3) Travel Menu "
               << "\n"
-              << " (4) Reset Menu "
+              << " (4) Rest Menu "
               << "\n\n"
               << " (5) Combat Test "
               << "\n\n";
@@ -97,7 +139,8 @@ void GameState::updateMenu()
         this->states->push(new TravelMenuState(this->character, this->states));
         break;
     case 4:
-
+        this->character->resetStatus();
+        std::cout << "You have rested...";
         break;
     case 5:
         this->combatTest();

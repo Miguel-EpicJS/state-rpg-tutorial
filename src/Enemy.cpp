@@ -4,12 +4,12 @@ Enemy::Enemy(int level)
 {
     this->level = level;
 
-    this->lifeEssence = 1 * this->level * (this->level % 10 + 1);
-    this->strength = 1 * this->level * (this->level % 10 + 1);
-    this->vitalEnergy = 1 * this->level * (this->level % 10 + 1);
-    this->dexterity = 1 * this->level * (this->level % 10 + 1);
-    this->perception = 1 * this->level * (this->level % 10 + 1);
-    this->absorption = 1 * this->level * (this->level % 10 + 1);
+    this->lifeEssence = 10 * this->level;
+    this->strength = 10 * this->level;
+    this->vitalEnergy = 10 * this->level;
+    this->dexterity = 10 * this->level;
+    this->perception = 10 * this->level;
+    this->absorption = 10 * this->level;
 
     std::random_device rd;
 	std::default_random_engine generator(rd()); // rd() provides a random seed
@@ -17,22 +17,26 @@ Enemy::Enemy(int level)
 
     this->fortune = distribution(generator);
 
-    this->hpMax = this->vitalEnergy * 10 + this->vitalEnergy;
+    this->hpMax = (this->vitalEnergy * 5) + (this->strength) + this->level*5;
     this->hp = this->hpMax;
 
-    this->staminaMax = this->vitalEnergy * 2 + this->strength;
-    this->stamina = this->staminaMax;
 
-    this->qiMax = this->vitalEnergy * 10 + this->level * 10;
+	this->staminaMax = this->vitalEnergy + (this->strength / 2) + (this->dexterity / 3);
+	this->stamina = this->staminaMax;
+
+	this->damageMin = this->strength;
+	this->damageMax = this->strength + 2;
+
+    this->qiMax = this->lifeEssence + this->vitalEnergy + (this->strength / 2) + (this->dexterity / 3);
     this->qi = this->qiMax;
 
-    this->defense = this->lifeEssence * 10 + this->strength;
+    this->defense = this->dexterity + (this->perception / 2);
 
-    this->hitChance = static_cast<float>(this->dexterity) / 40 * static_cast<float>(this->perception) * static_cast<float>(this->fortune);
-    this->critChance = static_cast<float>(this->dexterity) / 60 * static_cast<float>(this->perception) * static_cast<float>(this->fortune);
+    this->hitChance = static_cast<float>((this->dexterity / 2) + this->perception);
+    this->critChance = static_cast<float>(this->dexterity) / 60 + (static_cast<float>(this->perception) * static_cast<float>(this->fortune));
 
     this->damageMin = this->strength * 2;
-    this->damageMax = this->strength * 4 * this->fortune;
+    this->damageMax = this->strength * 4;
 
     this->spiritStones = 0;
 }

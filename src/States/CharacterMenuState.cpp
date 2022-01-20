@@ -35,9 +35,6 @@ void CharacterMenuState::updateMenu()
         std::cout << this->character->toStringsStats() << "\n";
         break;
     case 3:
-        break;
-    case 4:
-
         if (this->character->canLevelUp())
         {
             std::cout << "LEVEL UP - !\n";
@@ -46,8 +43,8 @@ void CharacterMenuState::updateMenu()
         {
             std::cout << "Not enough EXP! - \n";
         }
-        
-
+        break;
+    case 4:
         break;
     default:
         std::cout << "Not a valid option! \n\n";

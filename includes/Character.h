@@ -67,6 +67,7 @@ public:
     inline const int getLevel() const { return this->level; }
     inline const bool getIsDead() const { return this->hp <= 0; }
     inline const int getHP() const { return this->hp; }
+    inline const int getMaxHP() const { return this->hpMax; }
     inline const int getStamina() const { return this->stamina; }
     inline const int getQi() const { return this->qi; }
     inline const int getDamageMin() const { return this->damageMin; }
@@ -74,6 +75,7 @@ public:
     inline const int getDefence() const { return this->defense; }
     inline const int getHitChance() const { return this->hitChance; }
 
+    void resetStatus();
     void takeDamage(const int damage);
     void setPosition(const int x, const int y);
     void move(const int x, const int y);

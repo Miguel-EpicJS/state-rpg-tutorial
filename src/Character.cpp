@@ -2,24 +2,42 @@
 
 void Character::updateStats()
 {
-    this->hpMax = this->vitalEnergy * 10 + this->vitalEnergy;
+
+    this->expNext = static_cast<int>(
+		(50 / 3)*((pow(level, 3)
+			- 6 * pow(level, 2))
+			+ 17 * level - 12)) + 100;
+
+	this->hpMax = (this->vitalEnergy * 5) + (this->strength) + this->level*5;
     this->hp = this->hpMax;
 
-    this->staminaMax = this->vitalEnergy * 2 + this->strength;
-    this->stamina = this->staminaMax;
+	this->staminaMax = this->vitalEnergy + (this->strength / 2) + (this->dexterity / 3);
+	this->stamina = this->staminaMax;
 
-    this->qiMax = this->vitalEnergy * 10 + this->level * 10;
+	this->damageMin = this->strength;
+	this->damageMax = this->strength + 2;
+
+    this->qiMax = this->lifeEssence + this->vitalEnergy + (this->strength / 2) + (this->dexterity / 3);
     this->qi = this->qiMax;
 
-    this->defense = this->lifeEssence * 10 + this->strength;
+    this->defense = this->dexterity + (this->perception / 2);
 
-    this->hitChance = static_cast<float>(this->dexterity) * (static_cast<float>(this->perception) * 10.f/*  * static_cast<float>(this->fortune) */);
+    this->hitChance = static_cast<float>((this->dexterity / 2) + this->perception);
     this->critChance = static_cast<float>(this->dexterity) / 60 + (static_cast<float>(this->perception) * static_cast<float>(this->fortune));
 
     this->damageMin = this->strength * 2;
-    this->damageMax = this->strength * 4 * this->fortune;
+    this->damageMax = this->strength * 4;
 
 }
+
+void Character::resetStatus()
+{
+
+    this->hp = this->hpMax;
+	this->stamina = this->staminaMax;
+    this->qi = this->qiMax;
+}
+
 
 Character::Character(std::string name, std::string bio)
 {
@@ -34,12 +52,12 @@ Character::Character(std::string name, std::string bio)
     this->expNext = 46;
     this->statpoints = 0;
 
-    this->lifeEssence = 1;
-    this->strength = 1;
-    this->vitalEnergy = 1;
-    this->dexterity = 1;
-    this->perception = 1;
-    this->absorption = 1;
+    this->lifeEssence = 10;
+    this->strength = 10;
+    this->vitalEnergy = 10;
+    this->dexterity = 10;
+    this->perception = 10;
+    this->absorption = 10;
 
     std::random_device rd;
 	std::default_random_engine generator(rd()); // rd() provides a random seed
@@ -224,6 +242,8 @@ bool Character::canLevelUp()
         this->exp -= this->expNext;
         this->expNext = (50/3) * (std::pow(this->level, 3) - 6*std::pow(this->level, 2) + (this->level * 17) - 12);
         this->statpoints++;
+
+        this->updateStats();
 
         return true;
     }

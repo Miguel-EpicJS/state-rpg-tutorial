@@ -1,12 +1,6 @@
 #pragma once 
 
-#include <iostream>
-#include <iomanip>
-#include <stack>
-#include <ctime>
-
-#include "Character.h"
-#include "State.h"
+#include "CombatState.h"
 
 enum encounters { EMPTY = 0, FARM, CITY, SHOP, ENEMY, CHEST};
 
@@ -17,6 +11,7 @@ private:
     std::stack<State*>* states;
     std::string locationString;
     std::string minimapString;
+    int nrOfLocations;
 
 public:
     TravelMenuState(Character*& character, std::stack<State*>* states);

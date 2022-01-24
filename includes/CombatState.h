@@ -21,6 +21,7 @@ public:
     CombatState(Character*& character, std::stack<State *>* states);
     virtual ~CombatState();
 
+    void beginCombat();
     void printMenu();
     void updateMenu();
     void update();

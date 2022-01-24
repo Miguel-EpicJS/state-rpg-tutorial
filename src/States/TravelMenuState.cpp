@@ -5,6 +5,7 @@ TravelMenuState::TravelMenuState(Character *&character, std::stack<State *> *sta
     this->states = states;
     this->locationString = "NONE";
     this->updateEncounterMenu();
+    this->nrOfLocations = 6;
 }
 
 TravelMenuState::~TravelMenuState()
@@ -32,7 +33,7 @@ void TravelMenuState::printMenu()
 void TravelMenuState::updateEncounterMenu()
 {
     srand(this->character->getSeed());
-    int location = rand() % 6;
+    int location = rand() % this->nrOfLocations;
 
     switch (location)
     {
@@ -46,21 +47,22 @@ void TravelMenuState::updateEncounterMenu()
         this->locationString = "You are in a city.";
         break;
     case SHOP:
-        this->locationString = "You are in a mysterious shop.";
+        this->locationString = "You find a shop.";
         break;
     case ENEMY:
-        this->locationString = "You found an enemy.";
+        this->locationString = "You meet an enemy.";
+        this->states->push(new CombatState(this->character, this->states));
         break;
     case CHEST:
-        this->locationString = "You found a treasure chest.";
+        this->locationString = "You found a chest.";
         break;
     default:
         this->locationString = "ERROR NO SUCH LOCATION!";
         break;
     }
 }
-
 void TravelMenuState::updateMinimap()
+
 {
     std::stringstream ss;
 
@@ -85,7 +87,7 @@ void TravelMenuState::updateMinimap()
         for (size_t x = startX; x <= endX; x++)
         {
             srand(x + y);
-            int location = rand() % 6;
+            int location = rand() % this->nrOfLocations;
 
             if (x == this->character->getX() && y == this->character->getY())
             {
@@ -96,22 +98,22 @@ void TravelMenuState::updateMinimap()
                 switch (location)
                 {
                 case EMPTY:
-                    ss << "EM ";
+                    ss << "E ";
                     break;
-                case FARM:
-                    ss << "FA ";
+                case FARM: 
+                    ss << "F ";
                     break;
                 case CITY:
-                    ss << "CI ";
+                    ss << "C ";
                     break;
                 case SHOP:
-                    ss << "SH ";
+                    ss << "S ";
                     break;
                 case ENEMY:
-                    ss << "EN ";
+                    ss << "e ";
                     break;
                 case CHEST:
-                    ss << "CH ";
+                    ss << "c ";
                     break;
                 default:
                     ss << "XX ";

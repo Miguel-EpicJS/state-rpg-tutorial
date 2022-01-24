@@ -24,7 +24,6 @@ public:
     GameState(Character*& character, std::stack<State*>* states);
     virtual ~GameState();
 
-    void combatTest();
     void printMenu() const;
     void updateMenu();
     virtual void update();

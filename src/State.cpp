@@ -27,11 +27,8 @@ int State::getChoice() const
     {
         std::cout << " ERROR: Faulty Input!\n";
 
-        std::cin.clear();
-        std::cin.sync();
-
         std::cout << " - Enter choice: ";
-        std::cin >> std::setw(1) >> choice;
+        std::cin >> choice;
     }
 
     return choice;

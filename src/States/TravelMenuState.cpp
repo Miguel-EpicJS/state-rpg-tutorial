@@ -5,7 +5,7 @@ TravelMenuState::TravelMenuState(Character *&character, std::stack<State *> *sta
     this->states = states;
     this->locationString = "NONE";
     this->updateEncounterMenu();
-    this->nrOfLocations = 6;
+    this->nrOfLocations = 5;
 }
 
 TravelMenuState::~TravelMenuState()
@@ -22,7 +22,8 @@ void TravelMenuState::printMenu()
               << this->character->getMenuBar() << "\n\n"
               << this->character->toStringPosition() << "\n\n"
               << "Location: " << this->locationString << "\n\n"
-              << "Minimap: \n" << this->minimapString << "\n\n"
+              << "Minimap: \n"
+              << this->minimapString << "\n\n"
               << " (-1) Back to Menu\n"
               << " (1) UP\n"
               << " (2) DOWN\n"
@@ -32,33 +33,44 @@ void TravelMenuState::printMenu()
 
 void TravelMenuState::updateEncounterMenu()
 {
-    srand(this->character->getSeed());
-    int location = rand() % this->nrOfLocations;
-
-    switch (location)
+    if (!this->getQuit())
     {
-    case EMPTY:
-        this->locationString = "You are in an empty plane.";
-        break;
-    case FARM:
-        this->locationString = "You are in a farm.";
-        break;
-    case CITY:
-        this->locationString = "You are in a city.";
-        break;
-    case SHOP:
-        this->locationString = "You find a shop.";
-        break;
-    case ENEMY:
-        this->locationString = "You meet an enemy.";
-        this->states->push(new CombatState(this->character, this->states));
-        break;
-    case CHEST:
-        this->locationString = "You found a chest.";
-        break;
-    default:
-        this->locationString = "ERROR NO SUCH LOCATION!";
-        break;
+        /* code */
+
+        srand(this->character->getSeed());
+        int location = rand() % 5 /* nrOf locations */;
+
+        switch (location)
+        {
+        case EMPTY:
+        {
+            this->locationString = "You are in an empty plane.";
+
+            int randomr = rand() % 2;
+
+            if (randomr)
+            {
+                std::cout << "ENEMY ENCOUNTERED!\n";
+                this->states->push(new CombatState(this->character, this->states));
+            }
+            break;
+        }
+        case FARM:
+            this->locationString = "You are in a farm.";
+            break;
+        case CITY:
+            this->locationString = "You are in a city.";
+            break;
+        case SHOP:
+            this->locationString = "You find a shop.";
+            break;
+        case CHEST:
+            this->locationString = "You found a chest.";
+            break;
+        default:
+            this->locationString = "ERROR NO SUCH LOCATION!";
+            break;
+        }
     }
 }
 void TravelMenuState::updateMinimap()
@@ -87,36 +99,33 @@ void TravelMenuState::updateMinimap()
         for (size_t x = startX; x <= endX; x++)
         {
             srand(x + y);
-            int location = rand() % this->nrOfLocations;
+            int location = rand() % 5 /* nrOf locations */;
 
             if (x == this->character->getX() && y == this->character->getY())
             {
-                ss << "PL ";
+                ss << "(P) ";
             }
             else
             {
                 switch (location)
                 {
                 case EMPTY:
-                    ss << "E ";
+                    ss << "Emp ";
                     break;
-                case FARM: 
-                    ss << "F ";
+                case FARM:
+                    ss << "Far ";
                     break;
                 case CITY:
-                    ss << "C ";
+                    ss << "Cit ";
                     break;
                 case SHOP:
-                    ss << "S ";
-                    break;
-                case ENEMY:
-                    ss << "e ";
+                    ss << "Sho ";
                     break;
                 case CHEST:
-                    ss << "c ";
+                    ss << "Che ";
                     break;
                 default:
-                    ss << "XX ";
+                    ss << "XXX ";
                     break;
                 }
             }
@@ -154,8 +163,8 @@ void TravelMenuState::updateMenu()
 
 void TravelMenuState::update()
 {
-    this->updateEncounterMenu();
     this->updateMinimap();
     this->printMenu();
     this->updateMenu();
+    this->updateEncounterMenu();
 }

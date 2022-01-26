@@ -74,6 +74,31 @@ Character::~Character()
 {
 }
 
+std::string Character::flee()
+{
+    std::stringstream ss;
+
+    int lostExp = rand() % (this->level * 5) + 1;
+    int lostGold = rand() % (this->level * 5) + 1;
+    
+    ss << "Exp lost: " << lostExp << " | " << "Gold lost: " << lostGold;
+
+    this->exp -= lostExp;
+
+    if (this->exp  < 0)
+    {
+        this->exp = 0;
+    }
+    
+    this->spiritStones -= lostGold;
+
+    if (this->spiritStones  < 0)
+    {
+        this->spiritStones = 0;
+    }
+    return ss.str();
+}
+
 void Character::takeDamage(const int damage)
 {
     this->hp -= damage;

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <random>
 
+#include "Inventory.h"
 
 //(50/3) * (pow(x, 3) - 6*pow(x, 2) + (x * 17) - 12)
 
@@ -75,6 +76,7 @@ public:
     inline const int getDefence() const { return this->defense; }
     inline const int getHitChance() const { return this->hitChance; }
 
+    std::string flee();
     void resetStatus();
     void takeDamage(const int damage);
     void setPosition(const int x, const int y);

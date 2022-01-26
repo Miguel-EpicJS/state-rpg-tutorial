@@ -22,7 +22,6 @@ void CombatState::beginCombat()
     std::cin.get();
     while (!end_combat)
     {
-        std::cin.get();
         round++;
 
         std::string atkStr = "Player";
@@ -91,6 +90,7 @@ void CombatState::beginCombat()
         {
             end_combat = true;
             std::cout << "YOU ARE DEAD AND LOST SOME EXP AND SPIRIT STONES\n";
+            this->setQuit(true);
         }
         else if (enemy.getIsDead())
         {
@@ -98,9 +98,11 @@ void CombatState::beginCombat()
             int gainExp = rand()%(enemy.getLevel() * 10) + 1;
             std::cout << "YOU DEAFEATED THE ENEMY AND GAINED " << gainExp << " EXP!\n";
             this->character->addExp(gainExp);
+            this->setQuit(true);
         }
 
         turnDice = !turnDice;
+        std::cin.get();
     }
 }
 
@@ -108,7 +110,6 @@ void CombatState::printMenu()
 {
     std::cout << " --- Combat Menu --- \n\n"
         << this->character->getMenuBar() << "\n\n"
-        << " (-1) Back to Menu\n"
         << " (1) Begin Combat\n"
         << " (2) Flee\n"
         << " (3) Heal\n\n";
@@ -118,14 +119,14 @@ void CombatState::updateMenu()
 {
     switch (this->getChoice())
     {
-    case -1:
-        this->setQuit(true);
-        break;
     case 1:
         this->beginCombat();
         std::cout << "END OF COMBAT.\n";
         break;
     case 2:
+        std::cout << "You fled and lost some valuables...\n";
+        std::cout << this->character->flee() << "\n";
+        this->setQuit(true);
         break;
     case 3:
         this->character->resetStatus();

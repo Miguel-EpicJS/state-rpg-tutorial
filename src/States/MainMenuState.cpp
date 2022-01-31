@@ -2,8 +2,10 @@
 
 MainMenuState::MainMenuState(std::vector<Character*>* characterList, unsigned& activeCharacter, std::stack<State*> * states) : activeCharacter(activeCharacter), State()
 {
-    this->characterList = characterList;
     this->states = states;
+    this->characterList = characterList;
+
+    this->characterList->push_back(new Character("TEST", "DEBUGGING CHARACTER"));
 }
 
 MainMenuState::~MainMenuState()

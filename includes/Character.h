@@ -54,6 +54,9 @@ private:
     float hitChance;
     float critChance;
 
+    // inventory   
+    Inventory inventory;
+
     // functions
     void updateStats();
 

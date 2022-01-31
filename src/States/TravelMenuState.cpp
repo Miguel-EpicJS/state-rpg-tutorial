@@ -4,8 +4,9 @@ TravelMenuState::TravelMenuState(Character *&character, std::stack<State *> *sta
 {
     this->states = states;
     this->locationString = "NONE";
-    this->updateEncounterMenu();
     this->nrOfLocations = 5;
+    
+    this->updateEncounterMenu();
 }
 
 TravelMenuState::~TravelMenuState()
@@ -37,8 +38,10 @@ void TravelMenuState::updateEncounterMenu()
     {
         /* code */
 
+        int location = rand() % this->nrOfLocations;
         srand(this->character->getSeed());
-        int location = rand() % 5 /* nrOf locations */;
+
+        std::cout << location << "\n";
 
         switch (location)
         {
@@ -99,7 +102,7 @@ void TravelMenuState::updateMinimap()
         for (size_t x = startX; x <= endX; x++)
         {
             srand(x + y);
-            int location = rand() % 5 /* nrOf locations */;
+            int location = rand() % this->nrOfLocations;
 
             if (x == this->character->getX() && y == this->character->getY())
             {

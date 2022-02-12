@@ -130,9 +130,9 @@ std::string Inventory::toString() const
 {
     std::stringstream ss;
 
-    for (int i = 0; i < this->nrOfItems; i++)
+    for (unsigned i = 0; i < this->nrOfItems; i++)
     {
-        ss << i << ":  " << "\n";
+        ss << i << ": " << this->items[i]->toString() << "\n";
     }
     
 

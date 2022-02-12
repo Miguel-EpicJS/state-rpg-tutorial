@@ -17,7 +17,8 @@ void CharacterMenuState::printMenu()
         << " (1) Name & Bio \n"
         << " (2) Stats\n"
         << " (3) Level Up\n"
-        << " (3) Assign stat points\n"
+        << " (4) Assign stat points\n"
+        << " (5) Show inventory \n"
         ;
 }
 
@@ -45,6 +46,9 @@ void CharacterMenuState::updateMenu()
         }
         break;
     case 4:
+        break;
+    case 5:
+        std::cout << this->character->getInventory().toString() << "\n";
         break;
     default:
         std::cout << "Not a valid option! \n\n";

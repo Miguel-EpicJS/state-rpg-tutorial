@@ -16,7 +16,7 @@ private:
 
     void generate();
 public:
-    Item();
+    Item(std::string name, unsigned type, unsigned rarity, unsigned value);
     virtual ~Item();
 
     const std::string& getName();

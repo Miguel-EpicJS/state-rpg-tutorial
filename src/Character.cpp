@@ -68,6 +68,9 @@ Character::Character(std::string name, std::string bio)
     this->spiritStones = 0;
 
     this->updateStats();
+
+    this->inventory.add(Item("Test", 0, 1, 100));
+
 }
 
 Character::~Character()

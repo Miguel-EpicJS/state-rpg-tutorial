@@ -78,6 +78,7 @@ public:
     inline const int getDamageMax() const { return this->damageMax; }
     inline const int getDefence() const { return this->defense; }
     inline const int getHitChance() const { return this->hitChance; }
+    inline Inventory& getInventory() { return this->inventory; }
 
     std::string flee();
     void resetStatus();

@@ -5,12 +5,12 @@ void Item::generate()
 
 }
 
-Item::Item()
+Item::Item(std::string name, unsigned type, unsigned rarity, unsigned value)
 {
-    this->name = "";
-    this->type = 0;
-    this->rarity = 0;
-    this->value = 0;
+    this->name = name;
+    this->type = type;
+    this->rarity = rarity;
+    this->value = value;
 }
 
 Item::~Item()
